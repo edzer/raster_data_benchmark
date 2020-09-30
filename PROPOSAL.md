@@ -1,7 +1,7 @@
 # Raster Data Benchmarks for R
 
 [Edzer Pebesma](https://github.com/edzer/), 
-[Lauren O'Brien](https://twitter.com/obrl_soil),
+[Lauren O'Brien](https://github.com/obrl-soil/),
 [Michael Sumner](https://github.com/mdsumner/), and
 [Michael Dorman](https://github.com/michaeldorman)
 
