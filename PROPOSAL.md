@@ -1,10 +1,9 @@
 # Raster Data Benchmarks for R
 
 [Edzer Pebesma](https://github.com/edzer/), 
-[Robert Hijmans](https://github.com/rhijmans/),
-[Michael Sumner](https://github.com/mdsumner/), 
-[Michael Dorman](https://github.com/michaeldorman),
-[Lorenzo Busetto](https://github.com/lbusett)
+[Lauren O'Brien](https://twitter.com/obrl_soil),
+[Michael Sumner](https://github.com/mdsumner/), and
+[Michael Dorman](https://github.com/michaeldorman)
 
 ## Summary
 
@@ -20,12 +19,13 @@ of raster operations is not standardised.
 In R, packages for raster analysis have existed for a long time,
 starting with `spatstat` (2002), `rgdal` (2003), `sp` (2005) and
 `raster` (2010), and several packages have been building on those to
-add functionality (specific analysis or visualisation). Currently,
-we see a broadening of raster packages, including `stars` and `terra`
-with different data represenations, and several packages aiming at
-handling particular data types (e.g.  `ecmwfr` for ERA-5 weather
-data, `MODIStsp` for MODIS or `sen2r` for Sentinel-2 data) or at
-visualising data (`tmap`, `ggplot2`, `mapview`).
+add functionality (specific analysis or visualisation), like
+`exactextractr` and `fasterize`. Currently, we see a broadening of
+raster packages, including `stars` and `terra` with different data
+represenations, and several packages aiming at handling particular
+data types (e.g.  `ecmwfr` for ERA-5 weather data, `MODIStsp`
+for MODIS or `sen2r` for Sentinel-2 data) or at visualising data
+(`tmap`, `ggplot2`, `mapview`).
 
 This proposal will create an R package that explains, compares
 and shows the correspondences and differences of R packages for
@@ -42,18 +42,17 @@ and different R packages have different naming and capabilities
 to carry out raster analysis, perform differently, have different
 ways to handle (or not handle) very larger rasters, and provide
 different ways to visualise raster data. From a user perspective
-this variety is complicated, and makes it hard to choose which package
-to use for what.
+this variety is complicated, and makes it hard to choose which
+package to use for what.
 
 During the geospatial discussion panel at the "Why R?" conference
-in September 2021 This led Ahmadou Dicko to ask the questions
+in September 2021 this led Ahmadou Dicko to ask the questions
 [_As much as many analysis on vector data now use `sf`,
 what's the future for a more unified raster analysis data in
 R?_](https://www.youtube.com/watch?v=_HBpzbbUVgc&feature=youtu.be&t=1588)
 Given the broadening of R packages for raster analysis and
-visualisation we observe, this question is not easily answerable and
-becomes more relevant.
-
+visualisation we observe, this question is not easily answerable
+and becomes more relevant.
 
 ### Existing work
 
@@ -73,6 +72,13 @@ rgdal or [ncdf4](https://CRAN.R-project.org/package=ncdf4).
 * [stars](https:://cran.r-project.org/package=stars) a package strongly
 connected to `sf`, addressing raster data but also multidimensional
 data cubes
+* [fasterize](https://cran.r-project.org/package=fasterize) provides
+a replacement for rasterize() from the `raster` package that takes
+`sf`-type objects, and is much faster
+* [exactextractr](https://cran.r-project.org/package=exactextractr)
+provides a replacement for the 'extract' function from the 'raster'
+package that is suitable for extracting raster values using 'sf'
+polygons.
 
 Other package for reading multidimensional arrays, are
 
@@ -84,7 +90,7 @@ can list [RStoolbox](https://CRAN.R-project.org/package=RStoolbox),
 [MODIS](https://CRAN.R-project.org/package=MODIS),
 [MODIStsp](https://CRAN.R-project.org/package=MODIStsp),
 [sen2r](https://CRAN.R-project.org/package=sen2r),
-[quadmesh](https://cran.r-project.org/package=quadmesh),
+[anglr](https://cran.r-project.org/package=anglr),
 [ceramic](https://cran.r-project.org/package=ceramic),
 [lazyraster](https://cran.r-project.org/package=lazyraster),
 [starsExtra](https://cran.r-project.org/package=starsExtra),
@@ -100,21 +106,22 @@ functions and methods in `stars`; this has been a joint effort,
 with several contributors. Examples are failing, and potential
 differences in outcomes or performance are not revealed.
 
-Many issues, e.g. how to create RGB (red-green-blue) composites
-from raster data or how to handle color tables of categorical
-raster maps are discussed in scattered places, e.g. the issues of
-packages `stars` and `tmap`. These issues have been closed, and are
-relatively hard to find for those interested. Bringing the examples
-of these issues into the light in a user-accessible way will help
+Many issues, e.g. how to create RGB (red-green-blue) composites from
+raster data, how to handle color tables of categorical raster maps,
+or how to rasterize polygons or polygonize rasters are discussed
+in scattered places, e.g. the issues of particular packages. These
+issues have often been closed, and are hard to find and are not
+indexed in some place.  Collecting and organising the reproducible
+examples of these issues in an easily accessible way will help
 users decide where the functionality they need can be found.
 
 Finally, bringing differences in functionality, computed results,
 performance and visualisation options into the light is expected
 to have a positive effect on package development, as it will make
-differences clear in a simple, comprehensive and standardised
-way.  This way, it is an easier basis for discussion in user and
-developer communities, and may incentivise further collaboration,
-improvement of existing packages, or the development of new packages.
+differences clear in a simple, comprehensive and standardised way.
+This way, it is an easier basis for discussion in user and developer
+communities, and may incentivise further collaboration, improvement
+of existing packages, or the development of new packages.
 
 ## The Plan: 
 
@@ -132,6 +139,14 @@ can be done with different packages, and compares
 The main output will be a set of vignettes that makes the analysis of
 the comparisons easily readabable and findable. The vignettes should
 be easy to recreate when one of the packages compared is updated.
+
+The packages to be compared includes but is not limited to: `raster`,
+`terra`, `stars`, `fasterize`, `exactextractr`, `mapview`, `tmap`,
+and `anglr`. The operations to be compared includes those listed
+in the vignette comparing the stars and raster package, as well as
+plotting routines, and includes cropping, resampling and plotting
+at reduced resolution, polygonizing rasters, rasterizing polygons,
+cell-based operations, extraction at point/line/polygon sets. 
 
 The package developed will only depend on CRAN packages and possibly
 on a data-only package (such as the off-CRAN `starsdata` package)
